@@ -474,7 +474,7 @@ module ActiveMerchant #:nodoc:
           (10 - (sum % 10)) % 10 == check_digit.to_i
         end
 
-        def valid_bp_plus_algo?(numbers)
+        def valid_luhn_non_zero_check_digit?(numbers)
           return valid_luhn?(numbers.delete(' ')) if numbers[5] == ' '
 
           check_digit = numbers[-1]
