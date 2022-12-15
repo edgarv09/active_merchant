@@ -393,16 +393,22 @@ module ActiveMerchant #:nodoc:
             %w[1 2 3 success failure error].include?(number)
         end
 
+        def sodexo_no_luhn?(numbers)
+          CARD_COMPANY_DETECTORS['sodexo_no_luhn'].call(numbers)
+        end
+
         def valid_by_algorithm?(brand, numbers) #:nodoc:
           case brand
           when 'naranja'
             valid_naranja_algo?(numbers)
           when 'creditel'
             valid_creditel_algo?(numbers)
-          when 'alia', 'confiable', 'maestro_no_luhn'
+          when 'alia', 'confiable', 'maestro_no_luhn', 'anda', 'tarjeta-d'
             true
-          when 'bp_plus'
-            valid_bp_plus_algo?(numbers)
+          when 'sodexo'
+            sodexo_no_luhn?(numbers) ? true : valid_luhn?(numbers)
+          when 'bp_plus', 'passcard', 'edenred'
+            valid_luhn_non_zero_check_digit?(numbers)
           else
             valid_luhn?(numbers)
           end
