@@ -126,6 +126,10 @@ module ActiveMerchant #:nodoc:
       # * +'confiable'+
       # * +'mada'+
       # * +'bp_plus'+
+      # * +'passcard'+
+      # * +'edenred'+
+      # * +'anda'+
+      # * +'tarjeta-d'+
       #
       # Or, if you wish to test your implementation, +'bogus'+.
       #
