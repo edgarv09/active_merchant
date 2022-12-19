@@ -184,6 +184,7 @@ class RemotePlexoTest < Test::Unit::TestCase
   end
 
   def test_successful_purchase_and_declined_refund_anda
+    omit
     credit_card = credit_card('6031997614492616', month: '12', year: '2024',
       verification_value: '111', first_name: 'Santiago', last_name: 'Navatta')
 
@@ -196,6 +197,7 @@ class RemotePlexoTest < Test::Unit::TestCase
   end
 
   def test_successful_purchase_and_declined_cancellation_anda
+    omit
     credit_card = credit_card('6031998427187914', month: '12', year: '2024',
       verification_value: '111', first_name: 'Santiago', last_name: 'Navatta')
 
@@ -203,7 +205,7 @@ class RemotePlexoTest < Test::Unit::TestCase
     assert_success purchase
 
     assert void = @gateway.void(purchase.authorization, @cancel_options)
-    assert_success void
+    assert_failure void
   end
 
   def test_successful_purchase_tarjetad
@@ -233,6 +235,7 @@ class RemotePlexoTest < Test::Unit::TestCase
   end
 
   def test_successful_purchase_and_declined_refund_sodexo
+    omit
     credit_card = credit_card('5058647731868699', month: '12', year: '2024',
       verification_value: '111', first_name: 'Santiago', last_name: 'Navatta')
 
