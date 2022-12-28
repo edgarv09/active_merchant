@@ -45,7 +45,7 @@ class RemoteCredoraxTest < Test::Unit::TestCase
       }
     }
 
-    @apple_pay = network_tokenization_credit_card('4895370015293175',
+    @apple_pay_card = network_tokenization_credit_card('4176661000001015',
       month: 10,
       year: Time.new.year + 2,
       first_name: 'John',
@@ -56,7 +56,7 @@ class RemoteCredoraxTest < Test::Unit::TestCase
       transaction_id: 'abc123',
       source: :apple_pay)
 
-    @google_pay = network_tokenization_credit_card('4444333322221111',
+    @google_pay_card = network_tokenization_credit_card('4176661000001015',
       payment_cryptogram: 'EHuWW9PiBkWvqE5juRwDzAUFBAk=',
       month: '01',
       year: Time.new.year + 2,
