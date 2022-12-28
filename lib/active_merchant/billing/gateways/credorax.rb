@@ -28,6 +28,11 @@ module ActiveMerchant #:nodoc:
       self.money_format = :cents
       self.supported_cardtypes = %i[visa master maestro american_express jcb discover diners_club]
 
+      NETWORK_TOKENIZATION_CARD_SOURCE = {
+        'apple_pay' => 'applepay',
+        'google_pay' => 'googlepay'
+      }
+
       RESPONSE_MESSAGES = {
         '00' => 'Approved or completed successfully',
         '01' => 'Refer to card issuer',
@@ -279,6 +284,9 @@ module ActiveMerchant #:nodoc:
 
       def add_payment_method(post, payment_method)
         post[:c1] = payment_method.name
+        if payment_method.is_a? NetworkTokenizationCreditCard
+          post[:b21] = NETWORK_TOKENIZATION_CARD_SOURCE[payment.source.to_s]
+        end
         post[:b2] = CARD_TYPES[payment_method.brand] || ''
         post[:b1] = payment_method.number
         post[:b5] = payment_method.verification_value

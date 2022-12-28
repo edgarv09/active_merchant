@@ -44,6 +44,50 @@ class RemoteCredoraxTest < Test::Unit::TestCase
         }
       }
     }
+
+    @apple_pay = network_tokenization_credit_card('4895370015293175',
+      month: 10,
+      year: Time.new.year + 2,
+      first_name: 'John',
+      last_name: 'Smith',
+      verification_value: '737',
+      payment_cryptogram: 'YwAAAAAABaYcCMX/OhNRQAAAAAA=',
+      eci: '07',
+      transaction_id: 'abc123',
+      source: :apple_pay)
+
+    @google_pay = network_tokenization_credit_card('4444333322221111',
+      payment_cryptogram: 'EHuWW9PiBkWvqE5juRwDzAUFBAk=',
+      month: '01',
+      year: Time.new.year + 2,
+      source: :google_pay,
+      transaction_id: '123456789',
+      eci: '05')
+  end
+
+  def test_successful_purchase_with_apple_pay
+    response = @gateway.purchase(@amount, @apple_pay_card, @options)
+    assert_success response
+    assert_equal '1', response.params['H9']
+    assert_equal 'Succeeded', response.message
+  end
+
+  def test_successful_purchase_with_google_pay
+    response = @gateway.purchase(@amount, @google_pay_card, @options)
+    assert_success response
+    assert_equal '1', response.params['H9']
+    assert_equal 'Succeeded', response.message
+  end
+
+  def test_transcript_scrubbing_network_tokenization_card
+    transcript = capture_transcript(@gateway) do
+      @gateway.purchase(@amount, @apple_pay_card, @options)
+    end
+    transcript = @gateway.scrub(transcript)
+
+    assert_scrubbed(@apple_pay_card.number, transcript)
+    assert_scrubbed(@apple_pay_card.payment_cryptogram, transcript)
+    assert_scrubbed(@gateway.options[:password], transcript)
   end
 
   def test_invalid_login
